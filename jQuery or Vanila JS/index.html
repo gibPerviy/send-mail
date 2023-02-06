@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pure PHP</title>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Style success message -->
+  <style>
+    #success_message {
+      display: none;
+      background-color: green;
+      color: white;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <form>
+    <input type="text" name="name" id="name" required>
+    <input type="email" name="email" id="email" required>
+    <button type="submit" value="Send Email" onclick="sendEmail()">Go!</button>
+  </form>
+
+  <!-- Ajax script jQuery -->
+  <script>
+    function sendEmail() {
+      $.ajax({
+        url: "mail.php",
+        type: "post",
+        data: {
+          to: "your_email@example.com",
+          subject: "Subject of the email",
+          message: "Your message here",
+          headers: "From: sender_email@example.com"
+        },
+        success: function (response) {
+          if (response == "success") {
+            // Open message if success
+            $("#success_message").css("display", "block");
+          }
+        }
+      });
+    }
+  </script>
+
+  <!-- Vanila JS -->
+  <script>
+    function sendEmail() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "mail.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          if (this.responseText === "success") {
+            // Open message if success
+            document.getElementById("success_message").style.display = "block";
+          }
+        }
+      };
+      xhr.send("to=your_email@example.com&subject=Subject of the email&message=Your message here&headers=From: sender_email@example.com");
+    }
+  </script>
+
+</body>
+
+</html>
